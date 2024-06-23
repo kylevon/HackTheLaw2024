@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ChatHistory from "./ChatHistory";
 import PromptInput, { PROMPT_INPUT_EVENT } from "./PromptInput";
 import Workspace from "@/models/workspace";
+import { useManageWorkspaceModal } from "../../Modals/ManageWorkspace";
 import handleChat, { ABORT_STREAM_EVENT } from "@/utils/chat";
 import { isMobile } from "react-device-detect";
 import { SidebarMobileHeader } from "../../Sidebar";
@@ -13,9 +14,10 @@ import handleSocketResponse, {
   AGENT_SESSION_START,
 } from "@/utils/chat/agent";
 
-export default function ChatContainer({ workspace, knownHistory = [] }) {
+export default function ChatContainer({ workspace, knownHistory = [], showChat = false}) {
   const { threadSlug = null } = useParams();
   const [message, setMessage] = useState("");
+  const { showing, showModal, hideModal } = useManageWorkspaceModal();
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [chatHistory, setChatHistory] = useState(knownHistory);
   const [socketId, setSocketId] = useState(null);
@@ -242,13 +244,14 @@ export default function ChatContainer({ workspace, knownHistory = [] }) {
           updateHistory={setChatHistory}
           regenerateAssistantMessage={regenerateAssistantMessage}
         />
-        <PromptInput
+        {showChat && <PromptInput
           submit={handleSubmit}
           onChange={handleMessageChange}
           inputDisabled={loadingResponse}
           buttonDisabled={loadingResponse}
           sendCommand={sendCommand}
-        />
+        /> 
+        }
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import paths from "@/utils/paths";
 import ModalWrapper from "../ModalWrapper";
 import { useParams } from "react-router-dom";
 
-export default function WorkspaceChat({ loading, workspace }) {
+export default function WorkspaceChat({ loading, workspace, showChat }) {
   const { threadSlug = null } = useParams();
   const [history, setHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
@@ -62,7 +62,7 @@ export default function WorkspaceChat({ loading, workspace }) {
   }
 
   setEventDelegatorForCodeSnippets();
-  return <ChatContainer workspace={workspace} knownHistory={history} />;
+  return <ChatContainer workspace={workspace} knownHistory={history} showChat={showChat}/>;
 }
 
 // Enables us to safely markdown and sanitize all responses without risk of injection

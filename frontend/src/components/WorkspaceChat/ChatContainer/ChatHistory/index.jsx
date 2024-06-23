@@ -9,6 +9,9 @@ import useUser from "@/hooks/useUser";
 import Chartable from "./Chartable";
 import Workspace from "@/models/workspace";
 import { useParams } from "react-router-dom";
+import Button from '@mui/material/Button';
+import UploadIcon from '@mui/icons-material/Upload';
+
 
 export default function ChatHistory({
   history = [],
@@ -134,26 +137,30 @@ export default function ChatHistory({
   if (history.length === 0) {
     return (
       <div className="flex flex-col h-full md:mt-0 pb-44 md:pb-40 w-full justify-end items-center">
-        <div className="flex flex-col items-center md:items-start md:max-w-[600px] w-full px-4">
+        <div>
           <p className="text-white/60 text-lg font-base py-4">
             Welcome to your new workspace.
           </p>
-          {!user || user.role !== "default" ? (
-            <p className="w-full items-center text-white/60 text-lg font-base flex flex-col md:flex-row gap-x-1">
-              To get started either{" "}
-              <span
-                className="underline font-medium cursor-pointer"
-                onClick={showModal}
-              >
-                upload a document
-              </span>
-              or <b className="font-medium italic">send a chat.</b>
-            </p>
-          ) : (
-            <p className="w-full items-center text-white/60 text-lg font-base flex flex-col md:flex-row gap-x-1">
-              To get started <b className="font-medium italic">send a chat.</b>
-            </p>
-          )}
+          {
+            // <p className="w-full items-center text-white/60 text-lg font-base flex flex-col md:flex-row gap-x-1">
+            //   To get started {" "}
+            //   <span
+            //     className="underline font-medium cursor-pointer"
+            //     onClick={showModal}
+            //   >
+            //     upload your documents here
+            //   </span>
+            // </p>
+          <Button
+          variant="contained"
+          color="success"
+          component="label"
+          onClick={showModal}
+          startIcon={<UploadIcon />} // Add the icon to the button
+        >
+          Upload your documents here
+        </Button>
+          }
           <WorkspaceChatSuggestions
             suggestions={workspace?.suggestedMessages ?? []}
             sendSuggestion={handleSendSuggestedMessage}
