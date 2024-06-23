@@ -53,7 +53,7 @@ export default function NewWorkspaceModal({ hideModal = noop }) {
                     type="text"
                     id="name"
                     className="bg-zinc-900 w-full text-white placeholder:text-white/20 text-sm rounded-lg focus:border-white block w-full p-2.5"
-                    placeholder="My Workspace"
+                    placeholder="Add Agreement Name"
                     required={true}
                     autoComplete="off"
                   />

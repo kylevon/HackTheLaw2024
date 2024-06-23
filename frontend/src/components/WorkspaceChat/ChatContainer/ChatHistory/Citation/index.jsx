@@ -62,7 +62,10 @@ export default function Citations({ sources = [] }) {
             <Citation
               key={v4()}
               source={source}
-              onClick={() => setSelectedSource(source)}
+              onClick={() => {
+                console.log(`Selecting Source: ${source}`)
+                setSelectedSource(source)}
+              }
             />
           ))}
         </div>
@@ -121,6 +124,7 @@ function omitChunkHeader(text) {
 }
 
 function CitationDetailModal({ source, onClose }) {
+  console.log("Citation Detail Modal")
   const { references, title, chunks } = source;
   const { isUrl, text: webpageUrl, href: linkTo } = parseChunkSource(source);
 

@@ -24,7 +24,18 @@ async function streamChatWithWorkspace(
 ) {
   console.log("streamChatWithWorkspace");
   console.log(`message: ${JSON.stringify(message)}`);
-  hardcodedMessage = "Create a consolidated agreement using the agreement and the amendments, with inline citations, that is, referencing clearly what document was used for each citation with a hyperlink (it is very important to keep the hyperlinks). Don’t add any extra words, just the agreement.";
+  hardcodedMessage = "Create a consolidated agreement using the" +
+  " agreement and the amendments. This consolidated agreement should" +
+  " specify each change with a black highlighting and should have a description like: " +
+  " <span class=\"highlight\">£100,000,000<span class=\"tooltip\">"+
+  "Amended by the Fourth Amendment, Section 1.1, changing the amount from £50,000,000 as"+
+  " stated in the Second Amendment, Section 2.1, from £10,000,000 of the original agreement.</span></span>" +
+  " This span should have the amendment that was used and what changed, and if it was inserted or deleted."
+  " Modifying with javascript these classes so that they are shown aesthetically."
+  " this should not be encapsulated in a markdown html context, but just" +
+  " a raw html element. I repeat, DO NOT respond with ```html ... ```." +
+  " The background color of this html element should" +
+  " be rgba(255, 255, 255, 0.05)";
   const uuid = uuidv4();
   const updatedMessage = await grepCommand(hardcodedMessage, user);
 

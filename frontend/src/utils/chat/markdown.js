@@ -46,5 +46,5 @@ const markdown = markdownIt({
 });
 
 export default function renderMarkdown(text = "") {
-  return markdown.render(text);
+  return text;
 }

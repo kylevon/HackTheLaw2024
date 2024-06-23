@@ -377,7 +377,7 @@ export function Chartable({ props, workspace }) {
               <span
                 className={`flex flex-col gap-y-1 mt-2`}
                 dangerouslySetInnerHTML={{
-                  __html: renderMarkdown(content.caption),
+                  __html: content.caption,
                 }}
               />
             </div>
@@ -398,7 +398,7 @@ export function Chartable({ props, workspace }) {
           <span
             className={`flex flex-col gap-y-1 mt-2`}
             dangerouslySetInnerHTML={{
-              __html: renderMarkdown(content.caption),
+              __html: content.caption,
             }}
           />
         </div>

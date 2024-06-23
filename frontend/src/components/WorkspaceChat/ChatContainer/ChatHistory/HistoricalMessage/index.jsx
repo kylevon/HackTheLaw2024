@@ -79,7 +79,7 @@ const HistoricalMessage = ({
             <span
               className={`flex flex-col gap-y-1`}
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(renderMarkdown(message)),
+                __html: message,
               }}
             />
           )}

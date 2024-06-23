@@ -3,7 +3,7 @@ const fs = require("fs");
 class OpenAiWhisper {
   constructor({ options }) {
     const { OpenAI: OpenAIApi } = require("openai");
-    if (!options.openAiKey) throw new Error("No OpenAI API key was set.");
+    if (!options.openAiKey) throw new Error("No OpenAI API key (openAiKey) was set.");
 
     this.openai = new OpenAIApi({
       apiKey: options.openAiKey,

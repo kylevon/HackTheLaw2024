@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { Warning } from "@phosphor-icons/react";
 import UserIcon from "../../../../UserIcon";
-import renderMarkdown from "@/utils/chat/markdown";
 import Citations from "../Citation";
 
 const PromptReply = ({
@@ -62,7 +61,7 @@ const PromptReply = ({
           <WorkspaceProfileImage workspace={workspace} />
           <span
             className={`reply flex flex-col gap-y-1 mt-2`}
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(reply) }}
+            dangerouslySetInnerHTML={{ __html: reply }} // Directly render HTML
           />
         </div>
         <Citations sources={sources} />
