@@ -5,7 +5,7 @@ const {
 
 class OpenAiLLM {
   constructor(embedder = null, modelPreference = null) {
-    if (!process.env.OPEN_AI_KEY) throw new Error("No OpenAI API key was set.");
+    if (!process.env.OPEN_AI_KEY) throw new Error("No OpenAI API key (OPEN_AI_KEY) was set.");
     const { OpenAI: OpenAIApi } = require("openai");
 
     this.openai = new OpenAIApi({

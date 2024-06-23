@@ -22,13 +22,16 @@ async function streamChatWithWorkspace(
   user = null,
   thread = null
 ) {
+  console.log("streamChatWithWorkspace");
+  console.log(`message: ${JSON.stringify(message)}`);
+  hardcodedMessage = "Create a consolidated agreement using the agreement and the amendments, with inline citations, that is, referencing clearly what document was used for each citation with a hyperlink (it is very important to keep the hyperlinks). Don’t add any extra words, just the agreement.";
   const uuid = uuidv4();
-  const updatedMessage = await grepCommand(message, user);
+  const updatedMessage = await grepCommand(hardcodedMessage, user);
 
   if (Object.keys(VALID_COMMANDS).includes(updatedMessage)) {
     const data = await VALID_COMMANDS[updatedMessage](
       workspace,
-      message,
+      hardcodedMessage,
       uuid,
       user,
       thread
@@ -41,7 +44,7 @@ async function streamChatWithWorkspace(
   const isAgentChat = await grepAgents({
     uuid,
     response,
-    message,
+    message: hardcodedMessage,
     user,
     workspace,
     thread,
@@ -53,7 +56,7 @@ async function streamChatWithWorkspace(
     model: workspace?.chatModel,
   });
   const VectorDb = getVectorDbClass();
-  const { safe, reasons = [] } = await LLMConnector.isSafe(message);
+  const { safe, reasons = [] } = await LLMConnector.isSafe(hardcodedMessage);
   if (!safe) {
     writeResponseChunk(response, {
       id: uuid,
@@ -67,6 +70,7 @@ async function streamChatWithWorkspace(
     });
     return;
   }
+  console.log("It is a safe message")
 
   const messageLimit = workspace?.openAiHistory || 20;
   const hasVectorizedSpace = await VectorDb.hasNamespace(workspace.slug);
@@ -88,7 +92,7 @@ async function streamChatWithWorkspace(
     });
     await WorkspaceChats.new({
       workspaceId: workspace.id,
-      prompt: message,
+      prompt: hardcodedMessage,
       response: {
         text: textResponse,
         sources: [],
@@ -114,6 +118,10 @@ async function streamChatWithWorkspace(
     thread,
     messageLimit,
   });
+  hardcodedRawHistory = [];
+  hardcodedChatHistory = [];
+  console.log(`rawHistory: ${JSON.stringify(hardcodedRawHistory)}`);
+  console.log(`chatHistory: ${JSON.stringify(hardcodedChatHistory)}`);
 
   // Look for pinned documents and see if the user decided to use this feature. We will also do a vector search
   // as pinning is a supplemental tool but it should be used with caution since it can easily blow up a context window.
@@ -140,21 +148,25 @@ async function streamChatWithWorkspace(
       });
     });
 
+  console.log(`contextTexts: ${JSON.stringify(contextTexts)}`);
+  console.log(`pinnedDocIdentifiers: ${JSON.stringify(pinnedDocIdentifiers)}`);
+  console.log(`sources: ${JSON.stringify(sources)}`);
+
   const vectorSearchResults =
     embeddingsCount !== 0
       ? await VectorDb.performSimilaritySearch({
-          namespace: workspace.slug,
-          input: message,
-          LLMConnector,
-          similarityThreshold: workspace?.similarityThreshold,
-          topN: workspace?.topN,
-          filterIdentifiers: pinnedDocIdentifiers,
-        })
+        namespace: workspace.slug,
+        input: hardcodedMessage,
+        LLMConnector,
+        similarityThreshold: workspace?.similarityThreshold,
+        topN: workspace?.topN,
+        filterIdentifiers: pinnedDocIdentifiers,
+      })
       : {
-          contextTexts: [],
-          sources: [],
-          message: null,
-        };
+        contextTexts: [],
+        sources: [],
+        message: null,
+      };
 
   // Failed similarity search if it was run at all and failed.
   if (!!vectorSearchResults.message) {
@@ -173,7 +185,7 @@ async function streamChatWithWorkspace(
   const filledSources = fillSourceWindow({
     nDocs: workspace?.topN || 4,
     searchResults: vectorSearchResults.sources,
-    history: rawHistory,
+    history: hardcodedRawHistory,
     filterIdentifiers: pinnedDocIdentifiers,
   });
 
@@ -204,7 +216,7 @@ async function streamChatWithWorkspace(
 
     await WorkspaceChats.new({
       workspaceId: workspace.id,
-      prompt: message,
+      prompt: hardcodedMessage,
       response: {
         text: textResponse,
         sources: [],
@@ -224,9 +236,9 @@ async function streamChatWithWorkspace(
       systemPrompt: chatPrompt(workspace),
       userPrompt: updatedMessage,
       contextTexts,
-      chatHistory,
+      chatHistory: hardcodedChatHistory,
     },
-    rawHistory
+    hardcodedRawHistory
   );
 
   // If streaming is not explicitly enabled for connector
@@ -259,7 +271,7 @@ async function streamChatWithWorkspace(
   if (completeText?.length > 0) {
     const { chat } = await WorkspaceChats.new({
       workspaceId: workspace.id,
-      prompt: message,
+      prompt: hardcodedMessage,
       response: { text: completeText, sources, type: chatMode },
       threadId: thread?.id || null,
       user,

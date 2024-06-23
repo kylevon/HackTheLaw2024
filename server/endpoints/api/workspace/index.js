@@ -68,12 +68,12 @@ function apiWorkspaceEndpoints(app) {
     try {
       const { name = null } = reqBody(request);
       const { workspace, message } = await Workspace.new(name);
-      await Telemetry.sendTelemetry("workspace_created", {
-        multiUserMode: multiUserMode(response),
-        LLMSelection: process.env.LLM_PROVIDER || "openai",
-        Embedder: process.env.EMBEDDING_ENGINE || "inherit",
-        VectorDbSelection: process.env.VECTOR_DB || "lancedb",
-      });
+      //await Telemetry.sendTelemetry("workspace_created", {
+        //multiUserMode: multiUserMode(response),
+        //LLMSelection: process.env.LLM_PROVIDER || "openai",
+        //Embedder: process.env.EMBEDDING_ENGINE || "inherit",
+        //VectorDbSelection: process.env.VECTOR_DB || "lancedb",
+      //});
       await EventLogs.logEvent("api_workspace_created", {
         workspaceName: workspace?.name || "Unknown Workspace",
       });
@@ -680,6 +680,8 @@ function apiWorkspaceEndpoints(app) {
       try {
         const { slug } = request.params;
         const { message, mode = "query" } = reqBody(request);
+        console.log("Called stream-chat")
+        console.log(message)
         const workspace = await Workspace.get({ slug });
 
         if (!workspace) {
@@ -727,6 +729,7 @@ function apiWorkspaceEndpoints(app) {
         response.end();
       } catch (e) {
         console.log(e.message, e);
+        console.log("Error in stream chat");
         writeResponseChunk(response, {
           id: uuidv4(),
           type: "abort",
