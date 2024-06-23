@@ -13,6 +13,8 @@ export default function UploadFile({
   fetchKeys,
   setLoading,
   setLoadingMessage,
+  selectedItems,
+  setSelectedItems
 }) {
   const [ready, setReady] = useState(false);
   const [files, setFiles] = useState([]);
@@ -125,31 +127,31 @@ export default function UploadFile({
           </div>
         )}
       </div>
-      <div className="text-center text-white text-opacity-50 text-xs font-medium w-[560px] py-2">
+      {/* <div className="text-center text-white text-opacity-50 text-xs font-medium w-[560px] py-2">
         or submit a link
-      </div>
-      <form onSubmit={handleSendLink} className="flex gap-x-2">
-        <input
+      </div> */}
+      {/* <form onSubmit={handleSendLink} className="flex gap-x-2"> */}
+        {/* <input
           disabled={fetchingUrl}
           name="link"
           type="url"
           className="disabled:bg-zinc-600 disabled:text-slate-300 bg-zinc-900 text-white placeholder:text-white/20 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/4 p-2.5"
           placeholder={"https://example.com"}
           autoComplete="off"
-        />
-        <button
+        /> */}
+        {/* <button
           disabled={fetchingUrl}
           type="submit"
           className="disabled:bg-white/20 disabled:text-slate-300 disabled:border-slate-400 disabled:cursor-wait bg bg-transparent hover:bg-slate-200 hover:text-slate-800 w-auto border border-white text-sm text-white p-2.5 rounded-lg"
         >
           {fetchingUrl ? "Fetching..." : "Fetch website"}
-        </button>
-      </form>
-      <div className="mt-6 text-center text-white text-opacity-80 text-xs font-medium w-[560px]">
+        </button> */}
+      {/* </form> */}
+      {/* <div className="mt-6 text-center text-white text-opacity-80 text-xs font-medium w-[560px]">
         These files will be uploaded to the document processor running on this
         AnythingLLM instance. These files are not sent or shared with a third
         party.
-      </div>
+      </div> */}
     </div>
   );
 }
